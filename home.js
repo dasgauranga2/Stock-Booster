@@ -2,10 +2,11 @@
 const search_button = document.querySelector("#input-container input[type='submit']");
 const search_field = document.querySelector("#input-container input[type='text']");
 const chart = document.getElementById('stock-chart');
+const list = document.querySelector('#input-container ul');
 let API_KEY;
 let myChart;
 
-// CHARTIST.JS - http://gionkunz.github.io/chartist-js/examples.html#simple-line-chart
+// ALPHA VANTAGE DOCS - https://www.alphavantage.co/documentation/
 
 // get the alpha vantage api key
 fetch('API_KEY.txt')
@@ -22,12 +23,47 @@ fetch('API_KEY.txt')
 // detect search button click
 search_button.addEventListener('click',
     function search_stocks() {
-        // get the company symbol 
-        const symbol = search_field.value;
-        // get the current stock price
-        stock_price(symbol);
-        // get stock price history
-        stock_price_history(symbol);
+        // get the input query 
+        const query = search_field.value;
+        // web api url
+        const URL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=${API_KEY}`;
+        // use the fetch api to get the data
+        fetch(URL)
+        .then(function(response) {
+            // the response received has a json method which is a promise 
+            // return the promise
+            return response.json();
+        })
+        .then(function(data) {
+            // get the data from web api
+            const matches = data['bestMatches'];
+            // remove all existing children of the element
+            list.innerHTML = '';
+            for(let match of matches) {
+                // each company's details
+                const symbol = match['1. symbol'];
+                const name = match['2. name'];
+                const country = match['4. region'];
+                // create a new html element
+                const item = document.createElement('li');
+                // set the inner html of the element
+                item.innerHTML = `<p>${name}</p><p>${symbol}</p><p>${country}</p>`;
+                // add the item to the list
+                list.append(item);
+            }
+            // add event listener to each list item
+            for (let item of list.children) {
+                item.addEventListener('click', 
+                    function(event) {
+                        // get company symbol
+                        const symbol = item.children[1].innerHTML;
+                        // get the current stock price
+                        stock_price(symbol);
+                        // get stock price history
+                        stock_price_history(symbol);
+                });
+            }
+        });
 });
 
 // function to get current stock price of a company
