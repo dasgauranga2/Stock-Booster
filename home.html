@@ -13,9 +13,8 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
         <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300;400;500&display=swap" rel="stylesheet">
-        <!-- link to chartist.js -->
-        <link rel="stylesheet" href="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.css">
-        <script src="//cdn.jsdelivr.net/chartist.js/latest/chartist.min.js"></script>
+        <!-- link to chart.js -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </head>
 
     <body>
@@ -49,7 +48,7 @@
                 <p>High : 155</p>
                 <p>Low : 138</p>
             </div>
-            <div id="stock-price-history" class="ct-chart ct-minor-seventh"></div>
+            <div id="canvas-container"><canvas id="myChart"></canvas></div>
         </div>
         
         <!-- link the webpage to a js file -->

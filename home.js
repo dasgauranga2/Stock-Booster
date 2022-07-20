@@ -1,7 +1,9 @@
 
 const search_button = document.querySelector("#input-container input[type='submit']");
 const search_field = document.querySelector("#input-container input[type='text']");
+const chart = document.getElementById('stock-chart');
 let API_KEY;
+let myChart;
 
 // CHARTIST.JS - http://gionkunz.github.io/chartist-js/examples.html#simple-line-chart
 
@@ -89,30 +91,64 @@ function stock_price_history(company) {
         const history = data['Time Series (Daily)'];
         console.log(history);
         // get date strings
-        const dates = date_strings(190);
+        const dates = date_strings(180);
         // array of stock prices
         const prices = [];
+        const price_dates = [];
         for (let date of dates) {
             if (date in history) {
                 // get the stock price
                 const price = history[date]['4. close'];
                 prices.push(price);
+                price_dates.push(date);
             }
         }
         console.log(prices);
         // plot the line chart
-        new Chartist.Line('.ct-chart', {
-            // labels: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday'],
-            series: [
-                prices
-            ]
-          }, {
-            fullWidth: true,
-            showPoint: false,
-            chartPadding: {
-              right: 40
+        // line chart dataset
+        const dataset = {
+            labels: price_dates,
+            datasets: [{
+                label: 'Stock Price',
+                backgroundColor: 'rgb(255, 99, 132)',
+                borderColor: 'rgb(255, 99, 132)',
+                data: prices,
+                pointRadius: 0,
+            }]
+        };
+        // line chart configuration
+        const config = {
+            type: 'line',
+            data: dataset,
+            options: {
+                maintainAspectRatio: false,
+                responsive: true,
+                scales: {
+                    x: {
+                        grid: {
+                            display:false
+                        },
+                        ticks: {
+                            maxTicksLimit: 10
+                        }
+                    },
+                    y: {
+                        ticks: {
+                            maxTicksLimit: 6
+                        }
+                    },
+                }
             }
-          });
+        };
+        // destroy the chart
+        if (myChart != undefined) {
+            myChart.destroy();
+        }
+        // create the new line chart
+        myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+        );
     });
 }
 
