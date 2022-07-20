@@ -92,21 +92,45 @@ font-size: 1.5rem;
 #company-container {
     width: 70%;
     display: flex;
+    gap: 5px;
     flex-direction: column;
     margin: 0 auto;
+    font-family: 'Roboto Mono', monospace;
     border: 2px solid red;
 }
 
 /* COMPANY STOCK PRICE */
 #stock-price {
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
-    border: 2px solid green;
+    grid-template-columns: 1fr 1fr 1fr;
+    /* border: 2px solid green; */
+}
+
+#current {
+    font-size: 2rem;
+}
+
+#change {
+    font-size: 1.2rem;
 }
 
 #stock-price p {
+    font-size: 1.1rem;
+}
+
+#stock-price p:nth-child(1) {
+    text-align: left;
+    /* border: 2px solid gray; */
+}
+
+#stock-price p:nth-child(2) {
     text-align: center;
-    border: 2px solid gray;
+    /* border: 2px solid gray; */
+}
+
+#stock-price p:nth-child(3) {
+    text-align: right;
+    /* border: 2px solid gray; */
 }
 
 /* MEDIA QUERIES */
@@ -136,6 +160,18 @@ font-size: 1.5rem;
     }
     
     #stock-price {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
+    }
+
+    #stock-price p:nth-child(1) {
+        text-align: left;
+    }
+    
+    #stock-price p:nth-child(2) {
+        text-align: left;
+    }
+    
+    #stock-price p:nth-child(3) {
+        text-align: left;
     }
 }

@@ -44,12 +44,25 @@ function stock_price(company) {
         const high = stock_price['03. high'];
         const low = stock_price['04. low'];
         const price = stock_price['05. price'];
+        const change_price = Number(stock_price['09. change']).toFixed(2);
+        const change_price_percent = stock_price['10. change percent'];
         // select the html elements
+        const current = document.querySelector('#current');
+        const change = document.querySelector('#change');
         const prices = document.querySelectorAll('#stock-price p');
-        // set the prices
+        // // set the prices
+        current.innerHTML = `${Number(price).toFixed(2)}`;
+        if (change_price >= 0) {
+            change.innerHTML = `+${change_price} (${change_price_percent}) today`;
+            change.style.color = 'green';
+        }
+        else if (change_price < 0) {
+            change.innerHTML = `-${change_price} (${change_price_percent}) today`;
+            change.style.color = 'red';
+        }
         prices[0].innerHTML = `Open : ${Number(open).toFixed(2)}`;
-        prices[1].innerHTML = `Current : ${Number(price).toFixed(2)}`;
-        prices[2].innerHTML = `High : ${Number(high).toFixed(2)}`;
-        prices[3].innerHTML = `Open : ${Number(low).toFixed(2)}`;
+        prices[1].innerHTML = `High : ${Number(high).toFixed(2)}`;
+        prices[2].innerHTML = `Low : ${Number(low).toFixed(2)}`;
+        
     });
 }
