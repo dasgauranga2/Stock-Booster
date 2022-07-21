@@ -2,6 +2,7 @@
 const search_button = document.querySelector("#search-button");
 const search_field = document.querySelector("#input-container input[type='text']");
 const chart = document.getElementById('stock-chart');
+const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
 let API_KEY;
 let myChart;
@@ -62,6 +63,8 @@ search_button.addEventListener('click',
                         stock_price(symbol);
                         // get stock price history
                         stock_price_history(symbol);
+                        // scroll to company-container
+                        company.scrollIntoView({behavior: 'smooth'});
                 });
             }
         });
