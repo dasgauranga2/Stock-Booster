@@ -1,0 +1,145 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --lightblue: rgb(54, 88, 225);
+    --lighterblue: rgb(99, 123, 215);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+/* NAVBAR */
+#navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    /* border: 2px solid black; */
+}
+
+#navbar > a {
+    margin-left: 25vw;
+    width: 250px;
+    /* border: 2px solid red; */
+}
+
+#navbar img {
+    max-width: 100%;
+}
+
+#nav-links {
+    width: 25vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
+    /* border: 4px solid green; */
+}
+
+#nav-links a {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    color: rgb(90, 90, 90);
+    font-size: 1.2rem;
+    /* border: 2px solid green; */
+}
+
+#contact-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    flex-grow: 1;
+    /* border: 2px solid red; */
+}
+
+#contact-container h2 {
+    font-family: 'Oswald', sans-serif;
+    letter-spacing: 2px;
+    font-size: 4rem;
+    text-align: center;
+}
+
+#contact-container p {
+    font-family: 'Source Sans Pro', sans-serif;
+    font-weight: 300;
+    padding: 10px;
+    font-size: 1.2rem;
+}
+
+#about-container {
+    background-color: rgb(25, 197, 25);
+    color: white;
+    /* border: 2px solid red; */
+}
+
+#detail-container {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    background-color: rgb(235,235,235);
+    /* border: 2px solid red; */
+}
+
+#detail-container p {
+    text-align: center;
+}
+
+.icons {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    margin-top: 10px;
+    gap: 20px;
+}
+
+.fa-twitter {
+    color: rgb(29,161,242);
+}
+
+.fa-github {
+    color: rgb(30,30,30);
+}
+
+/* MEDIA QUERIES */
+/* FOR SMARTPHONES */
+@media(max-width:500px) {
+    #navbar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    #nav-links {
+        padding-right: 0;
+        width: fit-content;
+    }
+
+    #navbar > a {
+        width: 180px;
+        margin-left: 0;
+    }
+
+    #contact-container {
+        grid-template-columns: 1fr;
+        
+    }
+
+    #contact-container h2 {
+        font-size: 3rem;
+    }
+
+    #about-container p {
+        text-align: center;
+    }
+}
