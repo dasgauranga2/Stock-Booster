@@ -5,6 +5,7 @@ const chart = document.getElementById('stock-chart');
 const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
 let API_KEY;
+let FINNHUB_KEY = 'c25qcgiad3iafjno3250';
 let myChart;
 
 // ALPHA VANTAGE DOCS - https://www.alphavantage.co/documentation/
@@ -18,7 +19,9 @@ fetch('API_KEY.txt')
     })
     .then(function(data) {
         // get the data from the text file
-        API_KEY = data;
+        const API_KEYS = data.split('\n');
+        API_KEY = API_KEYS[0];
+        FINNHUB_KEY = API_KEYS[1];
     });
 
 // detect search button click
@@ -61,8 +64,8 @@ search_button.addEventListener('click',
                         const symbol = item.children[1].innerHTML;
                         // get the current stock price
                         stock_price(symbol);
-                        // get stock price history
-                        stock_price_history(symbol);
+                        // // get stock price history
+                        // stock_price_history(symbol);
                         // scroll to company-container
                         company.scrollIntoView({behavior: 'smooth'});
                 });
@@ -73,7 +76,7 @@ search_button.addEventListener('click',
 // function to get current stock price of a company
 function stock_price(company) {
     // web api url
-    const URL = `https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${company}&apikey=${API_KEY}`;
+    const URL = `https://finnhub.io/api/v1/quote?symbol=${company}&token=${FINNHUB_KEY}`;
     // use the fetch api to get the data
     fetch(URL)
     .then(function(response) {
@@ -83,15 +86,14 @@ function stock_price(company) {
     })
     .then(function(data) {
         // get the data from web api
-        const stock_price = data['Global Quote'];
-        console.log(stock_price);
+        const stock_price = data;
         // get the stock prices
-        const open = stock_price['02. open'];
-        const high = stock_price['03. high'];
-        const low = stock_price['04. low'];
-        const price = stock_price['05. price'];
-        const change_price = Number(stock_price['09. change']).toFixed(2);
-        const change_price_percent = stock_price['10. change percent'];
+        const open = stock_price['o'];
+        const high = stock_price['h'];
+        const low = stock_price['l'];
+        const price = stock_price['c'];
+        const change_price = Number(stock_price['d']).toFixed(2);
+        const change_price_percent = Number(stock_price['dp']).toFixed(2);
         // select the html elements
         const current = document.querySelector('#current');
         const change = document.querySelector('#change');
@@ -99,11 +101,11 @@ function stock_price(company) {
         // // set the prices
         current.innerHTML = `${Number(price).toFixed(2)}`;
         if (change_price >= 0) {
-            change.innerHTML = `+${change_price} (${change_price_percent}) today`;
+            change.innerHTML = `+${change_price} (${change_price_percent}%) today`;
             change.style.color = 'green';
         }
         else if (change_price < 0) {
-            change.innerHTML = `-${change_price} (${change_price_percent}) today`;
+            change.innerHTML = `${change_price} (${change_price_percent}%) today`;
             change.style.color = 'red';
         }
         prices[0].innerHTML = `Open : ${Number(open).toFixed(2)}`;
