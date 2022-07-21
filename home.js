@@ -1,5 +1,5 @@
 
-const search_button = document.querySelector("#input-container input[type='submit']");
+const search_button = document.querySelector("#search-button");
 const search_field = document.querySelector("#input-container input[type='text']");
 const chart = document.getElementById('stock-chart');
 const list = document.querySelector('#input-container ul');
@@ -25,6 +25,7 @@ search_button.addEventListener('click',
     function search_stocks() {
         // get the input query 
         const query = search_field.value;
+        console.log(query);
         // web api url
         const URL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=${API_KEY}`;
         // use the fetch api to get the data
