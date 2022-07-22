@@ -140,15 +140,23 @@ function stock_price_history(company) {
         const price_dates = data['t'];
         
         // plot the line chart
+        // get the chart
+        const ctx = document.getElementById('myChart').getContext('2d');
+        // background color gradient
+        let gradient = ctx.createLinearGradient(0, 0, 0, 200);
+        gradient.addColorStop(0, 'rgba(10,180,10,0.6)');
+        gradient.addColorStop(1, 'rgba(250,250,250,0.6)');
         // line chart dataset
         const dataset = {
             labels: price_dates,
             datasets: [{
                 label: 'Stock Price',
-                backgroundColor: 'rgb(255, 99, 132)',
-                borderColor: 'rgb(255, 99, 132)',
+                backgroundColor: gradient,
+                borderColor: 'rgb(10,180,10)',
                 data: prices,
                 pointRadius: 0,
+                borderWidth: 2,
+                fill:true
             }]
         };
         // line chart configuration
@@ -161,18 +169,32 @@ function stock_price_history(company) {
                 scales: {
                     x: {
                         grid: {
-                            display:false
+                            display:false,
+                            borderWidth: 1,
+                            borderColor: "rgb(40,40,40)"
                         },
                         ticks: {
-                            maxTicksLimit: 10
+                            maxTicksLimit: 10,
+                            // font: {
+                            //     size: 18
+                            // }
                         }
                     },
                     y: {
+                        grid: {
+                            // display:false,
+                            lineWidth: 1,
+                            color: "rgb(220,220,220)",
+                            drawBorder: false
+                        },
                         ticks: {
-                            maxTicksLimit: 6
+                            maxTicksLimit: 6,
+                            // font: {
+                            //     size: 18
+                            // }
                         }
                     },
-                }
+                },
             }
         };
         // destroy the chart
