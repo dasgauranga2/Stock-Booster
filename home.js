@@ -3,6 +3,7 @@ const search_button = document.querySelector("#search-button");
 const search_field = document.querySelector("#input-container input[type='text']");
 const company_name = document.querySelector("#company-container h1");
 const company_symbol = document.querySelector("#company-container h2");
+const no_match = document.querySelector("#input-container > p");
 const chart = document.getElementById('stock-chart');
 const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
@@ -53,37 +54,46 @@ search_button.addEventListener('click',
             console.log(matches);
             // remove all existing children of the element
             list.innerHTML = '';
-            for(let match of matches) {
-                // each company's details
-                const symbol = match['displaySymbol'];
-                const name = match['description'];
-                const country = 'USA';
-                // create a new html element
-                const item = document.createElement('li');
-                // set the inner html of the element
-                item.innerHTML = `<p>${name}</p><p>${symbol}</p><p>${country}</p>`;
-                // add the item to the list
-                list.append(item);
+            // check if there are any matches
+            if (matches.length === 0) {
+                no_match.style.display = 'flex';
+                list.style.display = 'none';
             }
-            // add event listener to each list item
-            for (let item of list.children) {
-                item.addEventListener('click', 
-                    function(event) {
-                        // get company symbol
-                        const symbol = item.children[1].innerHTML;
-                        // get the current stock price
-                        stock_price(symbol);
-                        // get stock price history
-                        stock_price_history(symbol);
-                        // set company-container display to flex
-                        company.style.display = 'flex';
-                        // set the company symbol
-                        company_symbol.innerHTML = item.children[1].innerHTML;
-                        // set the company name
-                        company_name.innerHTML = item.children[0].innerHTML;
-                        // scroll to company-container
-                        company.scrollIntoView({behavior: 'smooth'});
-                });
+            else if (matches.length > 0) {
+                no_match.style.display = 'none';
+                list.style.display = 'flex';
+                for(let match of matches) {
+                    // each company's details
+                    const symbol = match['displaySymbol'];
+                    const name = match['description'];
+                    const country = 'USA';
+                    // create a new html element
+                    const item = document.createElement('li');
+                    // set the inner html of the element
+                    item.innerHTML = `<p>${name}</p><p>${symbol}</p><p>${country}</p>`;
+                    // add the item to the list
+                    list.append(item);
+                }
+                // add event listener to each list item
+                for (let item of list.children) {
+                    item.addEventListener('click', 
+                        function(event) {
+                            // get company symbol
+                            const symbol = item.children[1].innerHTML;
+                            // get the current stock price
+                            stock_price(symbol);
+                            // get stock price history
+                            stock_price_history(symbol);
+                            // set company-container display to flex
+                            company.style.display = 'flex';
+                            // set the company symbol
+                            company_symbol.innerHTML = item.children[1].innerHTML;
+                            // set the company name
+                            company_name.innerHTML = item.children[0].innerHTML;
+                            // scroll to company-container
+                            company.scrollIntoView({behavior: 'smooth'});
+                    });
+                }
             }
         });
 });
