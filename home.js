@@ -1,6 +1,8 @@
 
 const search_button = document.querySelector("#search-button");
 const search_field = document.querySelector("#input-container input[type='text']");
+const company_name = document.querySelector("#company-container h1");
+const company_symbol = document.querySelector("#company-container h2");
 const chart = document.getElementById('stock-chart');
 const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
@@ -8,7 +10,6 @@ let API_KEY;
 let FINNHUB_KEY = 'c25qcgiad3iafjno3250';
 let myChart;
 
-// ALPHA VANTAGE DOCS - https://www.alphavantage.co/documentation/
 // FINNHUB DOCS - https://finnhub.io/docs/api/
 
 // get the alpha vantage api key
@@ -76,6 +77,10 @@ search_button.addEventListener('click',
                         stock_price_history(symbol);
                         // set company-container display to flex
                         company.style.display = 'flex';
+                        // set the company symbol
+                        company_symbol.innerHTML = item.children[1].innerHTML;
+                        // set the company name
+                        company_name.innerHTML = item.children[0].innerHTML;
                         // scroll to company-container
                         company.scrollIntoView({behavior: 'smooth'});
                 });

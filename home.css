@@ -211,7 +211,7 @@ span.ripple {
     flex-direction: column;
     margin: 0 auto;
     font-family: 'Roboto Mono', monospace;
-    border: 2px solid red;
+    /* border: 2px solid red; */
 }
 
 /* COMPANY STOCK PRICE */
