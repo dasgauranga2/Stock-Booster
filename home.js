@@ -9,6 +9,7 @@ let FINNHUB_KEY = 'c25qcgiad3iafjno3250';
 let myChart;
 
 // ALPHA VANTAGE DOCS - https://www.alphavantage.co/documentation/
+// FINNHUB DOCS - https://finnhub.io/docs/api/
 
 // get the alpha vantage api key
 fetch('API_KEY.txt')
@@ -64,8 +65,8 @@ search_button.addEventListener('click',
                         const symbol = item.children[1].innerHTML;
                         // get the current stock price
                         stock_price(symbol);
-                        // // get stock price history
-                        // stock_price_history(symbol);
+                        // get stock price history
+                        stock_price_history(symbol);
                         // scroll to company-container
                         company.scrollIntoView({behavior: 'smooth'});
                 });
@@ -117,8 +118,12 @@ function stock_price(company) {
 
 // function to get company stock price history
 function stock_price_history(company) {
+    // current timestamp in seconds
+    const current = Math.floor(Date.now()/1000);
+    // six months ago timestamp in seconds
+    const from = current-15770000;
     // web api url
-    const URL = `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol=${company}&outputsize=full&apikey=${API_KEY}`;
+    const URL = `https://finnhub.io/api/v1/stock/candle?symbol=${company}&resolution=D&from=${from}&to=${current}&token=${FINNHUB_KEY}`;
     // use the fetch api to get the data
     fetch(URL)
     .then(function(response) {
@@ -129,23 +134,11 @@ function stock_price_history(company) {
     .then(function(data) {
         // get the data from web api
         console.log(data);
-        // stock price history
-        const history = data['Time Series (Daily)'];
-        console.log(history);
-        // get date strings
-        const dates = date_strings(180);
         // array of stock prices
-        const prices = [];
-        const price_dates = [];
-        for (let date of dates) {
-            if (date in history) {
-                // get the stock price
-                const price = history[date]['4. close'];
-                prices.push(price);
-                price_dates.push(date);
-            }
-        }
-        console.log(prices);
+        const prices = data['c'];
+        // array of corresponding dates
+        const price_dates = data['t'];
+        
         // plot the line chart
         // line chart dataset
         const dataset = {
@@ -194,22 +187,22 @@ function stock_price_history(company) {
     });
 }
 
-// function to generate date strings
-function date_strings(days) {
-    // current timestamp
-    let timestamp = Date.now();
-    // milliseconds in a day
-    const ms_day = 86400000;
-    // array of date strings
-    const dates = [];
-    while (days > 0) {
-        // get the date from timestamp
-        const date = new Date(timestamp).toISOString();
-        // get the date string
-        const date_string = date.split('T')[0];
-        dates.push(date_string);
-        timestamp = timestamp-ms_day;
-        days--;
-    }
-    return dates.reverse();
-}
+// // function to generate date strings
+// function date_strings(days) {
+//     // current timestamp
+//     let timestamp = Date.now();
+//     // milliseconds in a day
+//     const ms_day = 86400000;
+//     // array of date strings
+//     const dates = [];
+//     while (days > 0) {
+//         // get the date from timestamp
+//         const date = new Date(timestamp).toISOString();
+//         // get the date string
+//         const date_string = date.split('T')[0];
+//         dates.push(date_string);
+//         timestamp = timestamp-ms_day;
+//         days--;
+//     }
+//     return dates.reverse();
+// }
