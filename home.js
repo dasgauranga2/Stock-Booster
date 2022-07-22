@@ -29,10 +29,9 @@ fetch('API_KEY.txt')
 search_button.addEventListener('click',
     function search_stocks() {
         // get the input query 
-        const query = search_field.value;
-        console.log(query);
-        // web api url
-        const URL = `https://www.alphavantage.co/query?function=SYMBOL_SEARCH&keywords=${query}&apikey=${API_KEY}`;
+        const query = search_field.value.toLowerCase();
+        // companies json file 
+        const URL = 'companies.json';
         // use the fetch api to get the data
         fetch(URL)
         .then(function(response) {
@@ -41,15 +40,23 @@ search_button.addEventListener('click',
             return response.json();
         })
         .then(function(data) {
-            // get the data from web api
-            const matches = data['bestMatches'];
+            // array to contain company matches
+            const matches = [];
+            // iterate through each company
+            for (let company of data) {
+                // check if company matches query entered by the user
+                if (company['description'].toLowerCase().includes(query) || company['displaySymbol'].toLowerCase().includes(query)) {
+                    matches.push(company);
+                }
+            }
+            console.log(matches);
             // remove all existing children of the element
             list.innerHTML = '';
             for(let match of matches) {
                 // each company's details
-                const symbol = match['1. symbol'];
-                const name = match['2. name'];
-                const country = match['4. region'];
+                const symbol = match['displaySymbol'];
+                const name = match['description'];
+                const country = 'USA';
                 // create a new html element
                 const item = document.createElement('li');
                 // set the inner html of the element
@@ -67,6 +74,8 @@ search_button.addEventListener('click',
                         stock_price(symbol);
                         // get stock price history
                         stock_price_history(symbol);
+                        // set company-container display to flex
+                        company.style.display = 'flex';
                         // scroll to company-container
                         company.scrollIntoView({behavior: 'smooth'});
                 });
@@ -100,7 +109,7 @@ function stock_price(company) {
         const change = document.querySelector('#change');
         const prices = document.querySelectorAll('#stock-price p');
         // // set the prices
-        current.innerHTML = `${Number(price).toFixed(2)}`;
+        current.innerHTML = `${Number(price).toFixed(2)} USD`;
         if (change_price >= 0) {
             change.innerHTML = `+${change_price} (${change_price_percent}%) today`;
             change.style.color = 'green';
