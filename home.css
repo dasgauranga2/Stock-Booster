@@ -301,7 +301,7 @@ canvas {
         gap: 25px;
         margin: 15px auto;
         grid-template-rows: 40px 40px;
-        width: 80%;
+        width: 90%;
     }
 
     #input-container ul, #input-container > p {
@@ -317,7 +317,7 @@ canvas {
     }
 
     #company-container {
-        width: 80%;
+        width: 90%;
     }
     
     #stock-price {
@@ -337,6 +337,7 @@ canvas {
     }
 
     #canvas-container {
-        height: 200px;
+        height: 250px;
+        margin-right: 10px;
     }
 }
