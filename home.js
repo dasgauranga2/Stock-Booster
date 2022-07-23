@@ -13,6 +13,22 @@ let myChart;
 
 // FINNHUB DOCS - https://finnhub.io/docs/api/
 
+// chart.js tooltip custom positioner
+Chart.Tooltip.positioners.custom = function(items) {
+    const pos = Chart.Tooltip.positioners.average(items);
+
+    // Happens when nothing is found
+    if (pos === false) {
+        return false;
+    }
+
+    const chart = this._chart;
+    return {
+        x: pos.x,
+        y: chart.chartArea.top,
+    };
+}
+
 // get the alpha vantage api key
 fetch('API_KEY.txt')
     .then(function(response) {
@@ -160,6 +176,8 @@ function stock_price_history(company) {
         console.log(data);
         // array of stock prices
         const prices = data['c'];
+        // maximum stock prices
+        const max_price = Math.max(...prices);
         // array of corresponding timestamps
         const price_timestamps = data['t'];
         // convert timestamps to dates
@@ -169,8 +187,6 @@ function stock_price_history(company) {
                 const string = date_string(date);
                 return string;
         });
-        console.log(price_timestamps);
-        console.log(price_dates);
         // plot the line chart
         // get the chart
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -224,15 +240,22 @@ function stock_price_history(company) {
                             // font: {
                             //     size: 18
                             // }
-                        }
+                        },
+                        suggestedMax: max_price*1.15
                     },
                 },
                 plugins: {
                     tooltip: {
                         intersect: false,
                         mode: 'nearest',
-                        axis: 'x'
+                        axis: 'x',
+                        position: 'custom',
+                        // yAlign: null,
+                        // xAlign: 'center'
                     },
+                    legend: {
+                        display: false
+                    }
                 }
             },
             plugins: [{
