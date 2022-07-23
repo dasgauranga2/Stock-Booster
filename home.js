@@ -160,9 +160,17 @@ function stock_price_history(company) {
         console.log(data);
         // array of stock prices
         const prices = data['c'];
-        // array of corresponding dates
-        const price_dates = data['t'];
-        
+        // array of corresponding timestamps
+        const price_timestamps = data['t'];
+        // convert timestamps to dates
+        const price_dates = price_timestamps.map(
+            function convert(timestamp) {
+                const date = new Date(timestamp*1000);
+                const string = date_string(date);
+                return string;
+        });
+        console.log(price_timestamps);
+        console.log(price_dates);
         // plot the line chart
         // get the chart
         const ctx = document.getElementById('myChart').getContext('2d');
@@ -198,7 +206,7 @@ function stock_price_history(company) {
                             borderColor: "rgb(40,40,40)"
                         },
                         ticks: {
-                            maxTicksLimit: 10,
+                            maxTicksLimit: 8,
                             // font: {
                             //     size: 18
                             // }
@@ -219,7 +227,89 @@ function stock_price_history(company) {
                         }
                     },
                 },
-            }
+                plugins: {
+                    tooltip: {
+                        intersect: false,
+                        mode: 'nearest',
+                        axis: 'x'
+                    },
+                }
+            },
+            plugins: [{
+                id: 'corsair',
+                afterInit: (chart) => {
+                  chart.corsair = {
+                    x: 0,
+                    y: 0
+                  }
+                },
+                afterEvent: (chart, evt) => {
+                  const {
+                    chartArea: {
+                      top,
+                      bottom,
+                      left,
+                      right
+                    }
+                  } = chart;
+                  const {
+                    event: {
+                      x,
+                      y
+                    }
+                  } = evt;
+                  if (x < left || x > right || y < top || y > bottom) {
+                    chart.corsair = {
+                      x,
+                      y,
+                      draw: false
+                    }
+                    chart.draw();
+                    return;
+                  }
+            
+                  chart.corsair = {
+                    x,
+                    y,
+                    draw: true
+                  }
+            
+                  chart.draw();
+                },
+                afterDatasetsDraw: (chart, _, opts) => {
+                  const {
+                    ctx,
+                    chartArea: {
+                      top,
+                      bottom,
+                      left,
+                      right
+                    }
+                  } = chart;
+                  const {
+                    x,
+                    y,
+                    draw
+                  } = chart.corsair;
+            
+                  if (!draw) {
+                    return;
+                  }
+            
+                  ctx.lineWidth = opts.width || 0;
+                  ctx.setLineDash(opts.dash || []);
+                  ctx.strokeStyle = opts.color || 'black'
+            
+                  ctx.save();
+                  ctx.beginPath();
+                  ctx.moveTo(x, bottom);
+                  ctx.lineTo(x, top);
+                //   ctx.moveTo(left, y);
+                //   ctx.lineTo(right, y);
+                  ctx.stroke();
+                  ctx.restore();
+                }
+              }]
         };
         // destroy the chart
         if (myChart != undefined) {
@@ -233,22 +323,19 @@ function stock_price_history(company) {
     });
 }
 
-// // function to generate date strings
-// function date_strings(days) {
-//     // current timestamp
-//     let timestamp = Date.now();
-//     // milliseconds in a day
-//     const ms_day = 86400000;
-//     // array of date strings
-//     const dates = [];
-//     while (days > 0) {
-//         // get the date from timestamp
-//         const date = new Date(timestamp).toISOString();
-//         // get the date string
-//         const date_string = date.split('T')[0];
-//         dates.push(date_string);
-//         timestamp = timestamp-ms_day;
-//         days--;
-//     }
-//     return dates.reverse();
-// }
+// convert date object to string 
+function date_string(date) {
+    // array of months
+    const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+    // function to get date ordinal
+    const nth = function(d) {
+        if (d > 3 && d < 21) return 'th';
+        switch (d % 10) {
+            case 1:  return "st";
+            case 2:  return "nd";
+            case 3:  return "rd";
+            default: return "th";
+        }
+    };
+    return `${date.getDate()}${nth(date.getDate())} ${months[date.getMonth()]} ${date.getFullYear()}`;
+}
