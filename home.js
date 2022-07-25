@@ -3,11 +3,13 @@ const search_button = document.querySelector("#search-button");
 const search_field = document.querySelector("#input-container input[type='text']");
 const company_name = document.querySelector("#company-container h1");
 const company_symbol = document.querySelector("#company-container h2");
+const period_change = document.querySelectorAll("#period-change button");
 const no_match = document.querySelector("#input-container > p");
 const chart = document.getElementById('stock-chart');
 const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
 let API_KEY;
+let current_company;
 let FINNHUB_KEY = 'c25qcgiad3iafjno3250';
 let myChart;
 
@@ -42,6 +44,16 @@ fetch('API_KEY.txt')
         API_KEY = API_KEYS[0];
         FINNHUB_KEY = API_KEYS[1];
     });
+
+// detect period change button click
+period_change.forEach((button) => {
+    button.addEventListener('click', 
+        function(event) {
+            // get the period
+            const period = event.target.innerHTML;
+            stock_price_history(current_company,period);
+    });
+});
 
 // detect search button click
 search_button.addEventListener('click',
@@ -96,10 +108,12 @@ search_button.addEventListener('click',
                         function(event) {
                             // get company symbol
                             const symbol = item.children[1].innerHTML;
+                            // set the current selected company
+                            current_company = symbol;
                             // get the current stock price
                             stock_price(symbol);
                             // get stock price history
-                            stock_price_history(symbol);
+                            stock_price_history(symbol,'6M');
                             // set company-container display to flex
                             company.style.display = 'flex';
                             // set the company symbol
@@ -157,13 +171,25 @@ function stock_price(company) {
 }
 
 // function to get company stock price history
-function stock_price_history(company) {
+function stock_price_history(company,period) {
     // current timestamp in seconds
     const current = Math.floor(Date.now()/1000);
-    // // six months ago timestamp in seconds
-    // const from = current-15770000;
-    // one year ago timestamp in seconds
-    const from = current-31540000;
+    // set how far back the user wants to see the stock price
+    let from;
+    switch (period) {
+        case '1Y':
+            from = current-31540000;
+            break;
+        case '6M':
+            from = current-15770000;
+            break;
+        case '1M':
+            from = current-2628000;
+            break;
+        case '1W':
+            from = current-604800;
+            break;
+    }    
     // web api url
     const URL = `https://finnhub.io/api/v1/stock/candle?symbol=${company}&resolution=D&from=${from}&to=${current}&token=${FINNHUB_KEY}`;
     // use the fetch api to get the data

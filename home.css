@@ -260,6 +260,34 @@ span.ripple {
     /* border: 2px solid gray; */
 }
 
+/* PERIOD CHANGE */
+#period-change {
+    display: flex;
+    flex-direction: row;
+    /* gap: 10px; */
+    justify-content: center;
+    padding-top: 50px;
+    padding-bottom: 15px;
+    /* border: 2px solid green; */
+}
+
+#period-change button {
+    border: 1px solid gray;
+    border-top: none;
+    border-bottom: none;
+    border-right: none;
+    font-size: 1.1rem;
+    color: gray;
+    padding-left: 10px;
+    padding-right: 10px;
+    cursor: pointer;
+    background: transparent;
+}
+
+#period-change button:first-child {
+    border-left: none;
+}
+
 /* STOCK PRICE CHART */
 #canvas-container {
     height: 350px;
