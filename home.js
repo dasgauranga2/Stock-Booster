@@ -160,8 +160,10 @@ function stock_price(company) {
 function stock_price_history(company) {
     // current timestamp in seconds
     const current = Math.floor(Date.now()/1000);
-    // six months ago timestamp in seconds
-    const from = current-15770000;
+    // // six months ago timestamp in seconds
+    // const from = current-15770000;
+    // one year ago timestamp in seconds
+    const from = current-31540000;
     // web api url
     const URL = `https://finnhub.io/api/v1/stock/candle?symbol=${company}&resolution=D&from=${from}&to=${current}&token=${FINNHUB_KEY}`;
     // use the fetch api to get the data
@@ -241,7 +243,7 @@ function stock_price_history(company) {
                             //     size: 18
                             // }
                         },
-                        suggestedMax: max_price*1.15
+                        suggestedMax: max_price*1.1
                     },
                 },
                 plugins: {
