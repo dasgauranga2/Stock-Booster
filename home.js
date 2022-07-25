@@ -250,8 +250,16 @@ function stock_price_history(company) {
                         mode: 'nearest',
                         axis: 'x',
                         position: 'custom',
-                        // yAlign: null,
-                        // xAlign: 'center'
+                        callbacks: {
+                            title: (item) => {
+                                //console.log(item);
+                                return `${item[0]['label']}`;
+                            },
+                            label: (item) => {
+                                //console.log(item);
+                                return `${Number(item.raw).toFixed(2)} USD`;
+                            }
+                        }
                     },
                     legend: {
                         display: false
