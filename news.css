@@ -1,0 +1,120 @@
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    --lightblue: rgb(54, 88, 225);
+    --lighterblue: rgb(99, 123, 215);
+}
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+/* NAVBAR */
+#navbar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    padding: 10px;
+    /* border: 2px solid black; */
+}
+
+#navbar > a {
+    margin-left: 25vw;
+    width: 250px;
+    /* border: 2px solid red; */
+}
+
+#navbar img {
+    max-width: 100%;
+}
+
+#nav-links {
+    width: 25vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+    padding-right: 10px;
+    /* border: 4px solid green; */
+}
+
+#nav-links a {
+    text-decoration: none;
+    font-family: 'Roboto', sans-serif;
+    font-weight: 700;
+    color: rgb(90, 90, 90);
+    font-size: 1.2rem;
+    /* border: 2px solid green; */
+}
+
+/* NEWS */
+#news-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    width: 80%;
+    margin: 50px auto;
+    gap: 10px;
+    /* border: 4px solid green; */
+}
+
+.article-container {
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    gap: 15px;
+    padding: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    color: black;
+    border: 1px solid black;
+}
+
+.article-info {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.article-container img {
+    max-width: 100%;
+}
+
+.article-container h2:hover {
+    text-decoration: underline;
+}
+
+/* MEDIA QUERIES */
+/* FOR SMARTPHONES */
+@media(max-width:500px) {
+    #navbar {
+        flex-direction: column;
+        gap: 15px;
+        align-items: center;
+    }
+
+    #nav-links {
+        padding-right: 0;
+        width: fit-content;
+    }
+
+    #navbar > a {
+        width: 180px;
+        margin-left: 0;
+    }
+}
+
+/* FOR NEWS CONTAINER */
+@media(max-width:800px) {
+    #news-container {
+        grid-template-columns: 1fr;
+    }
+
+    .article-container {
+        grid-template-columns: 1fr;
+    }
+}
