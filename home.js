@@ -36,6 +36,13 @@ period_change.forEach((button) => {
         function(event) {
             // get the period
             const period = event.target.innerHTML;
+            // set the color of all buttons to gray
+            period_change.forEach((button) => {
+                button.style.color = 'gray';
+            });
+            // set the color of the button clicked to blue
+            button.style.color = 'blue';
+            // get the new company stock price history
             stock_price_history(current_company,period);
     });
 });
@@ -172,7 +179,7 @@ function stock_price_history(company,period) {
             from = current-2628000;
             break;
         case '1W':
-            from = current-604800;
+            from = current-777600;
             break;
     }    
     // web api url
