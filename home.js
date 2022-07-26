@@ -47,12 +47,14 @@ search_button.addEventListener('click',
         // get the input query 
         const query = search_field.value.toLowerCase();
         // companies json file 
-        const URL = 'companies.json';
+        //const URL = 'companies.json';
+        const URL = 'https://stock-booster.s3.ap-south-1.amazonaws.com/companies.json';
         // use the fetch api to get the data
         fetch(URL)
         .then(function(response) {
             // the response received has a json method which is a promise 
             // return the promise
+            console.log(response);
             return response.json();
         })
         .then(function(data) {
