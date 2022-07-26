@@ -27,13 +27,17 @@ fetch(URL)
         const image = article['banner_image'];
         const summary = article['summary'];
         const link = article['url'];
+        // check if the details are correct
+        if (image === "") {
+            continue;
+        }
         // create a new html element
         const item = document.createElement('a');
         // set the href attribute
         item.setAttribute('href', link);
         // set the inner html of the element
         item.innerHTML = `
-        <img src=${image} alt="">
+        <img src=${image}>
         <div class="article-info">
             <h2>${title}</h2>
             <p>${summary}</p>

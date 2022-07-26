@@ -8,7 +8,6 @@ const no_match = document.querySelector("#input-container > p");
 const chart = document.getElementById('stock-chart');
 const company = document.getElementById('company-container');
 const list = document.querySelector('#input-container ul');
-let API_KEY;
 let current_company;
 let FINNHUB_KEY = 'c25qcgiad3iafjno3250';
 let myChart;
@@ -30,20 +29,6 @@ Chart.Tooltip.positioners.custom = function(items) {
         y: chart.chartArea.top,
     };
 }
-
-// get the alpha vantage api key
-fetch('API_KEY.txt')
-    .then(function(response) {
-        // the response received has a text method which is a promise 
-        // return the promise
-        return response.text();
-    })
-    .then(function(data) {
-        // get the data from the text file
-        const API_KEYS = data.split('\n');
-        API_KEY = API_KEYS[0];
-        FINNHUB_KEY = API_KEYS[1];
-    });
 
 // detect period change button click
 period_change.forEach((button) => {
@@ -153,19 +138,19 @@ function stock_price(company) {
         const current = document.querySelector('#current');
         const change = document.querySelector('#change');
         const prices = document.querySelectorAll('#stock-price p');
-        // // set the prices
+        // set the prices
         current.innerHTML = `${Number(price).toFixed(2)} USD`;
         if (change_price >= 0) {
             change.innerHTML = `+${change_price} (${change_price_percent}%) today`;
             change.style.color = 'green';
         }
         else if (change_price < 0) {
-            change.innerHTML = `${change_price} (${change_price_percent}%) today`;
+            change.innerHTML = `${change_price} (${Math.abs(change_price_percent)}%) today`;
             change.style.color = 'red';
         }
-        prices[0].innerHTML = `Open : ${Number(open).toFixed(2)}`;
-        prices[1].innerHTML = `High : ${Number(high).toFixed(2)}`;
-        prices[2].innerHTML = `Low : ${Number(low).toFixed(2)}`;
+        prices[0].innerHTML = `Open: ${Number(open).toFixed(2)} USD`;
+        prices[1].innerHTML = `High: ${Number(high).toFixed(2)} USD`;
+        prices[2].innerHTML = `Low: ${Number(low).toFixed(2)} USD`;
         
     });
 }
