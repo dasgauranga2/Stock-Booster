@@ -2,12 +2,26 @@
 const news = document.getElementById('news-container');
 let API_KEY;
 let current_company;
-let ALPHAVANTAGE_KEY = 'c25qcgiad3iafjno3250';
+let ALPHAVANTAGE_KEYS = ['c25qcgiad3iafjno3250','WGTQSM1LASX0N5KS'];
+let key_index = 0;
 
 // FINNHUB DOCS - https://finnhub.io/docs/api/
 
+// function to get the alpha vantage key
+function get_key() {
+    const rand_num = Math.random();
+    if (rand_num <= 0.5) {
+        console.log("FIRST");
+        return ALPHAVANTAGE_KEYS[0];
+    }
+    else if (rand_num > 0.5) {
+        console.log("SECOND");
+        return ALPHAVANTAGE_KEYS[1];
+    } 
+}
+
 // web api url
-const URL = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&topics=technology&limit=20&apikey=${ALPHAVANTAGE_KEY}`;
+const URL = `https://www.alphavantage.co/query?function=NEWS_SENTIMENT&topics=technology&limit=20&apikey=${get_key()}`;
 // use the fetch api to get the data
 fetch(URL)
 .then(function(response) {

@@ -36,12 +36,6 @@ period_change.forEach((button) => {
         function(event) {
             // get the period
             const period = event.target.innerHTML;
-            // set the color of all buttons to gray
-            period_change.forEach((button) => {
-                button.style.color = 'gray';
-            });
-            // set the color of the button clicked to blue
-            button.style.color = 'blue';
             // get the new company stock price history
             stock_price_history(current_company,period);
     });
@@ -166,20 +160,28 @@ function stock_price(company) {
 function stock_price_history(company,period) {
     // current timestamp in seconds
     const current = Math.floor(Date.now()/1000);
+    // set the color of all buttons to gray
+    period_change.forEach((button) => {
+        button.style.color = 'gray';
+    });
     // set how far back the user wants to see the stock price
     let from;
     switch (period) {
         case '1Y':
             from = current-31540000;
+            period_change[3].style.color = 'blue';
             break;
         case '6M':
             from = current-15770000;
+            period_change[2].style.color = 'blue';
             break;
         case '1M':
             from = current-2628000;
+            period_change[1].style.color = 'blue';
             break;
         case '1W':
             from = current-777600;
+            period_change[0].style.color = 'blue';
             break;
     }    
     // web api url

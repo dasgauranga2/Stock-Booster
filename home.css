@@ -288,10 +288,6 @@ span.ripple {
     border-left: none;
 }
 
-#period-change button:nth-child(3) {
-    color: blue;
-}
-
 /* STOCK PRICE CHART */
 #canvas-container {
     height: 350px;
